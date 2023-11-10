@@ -1,0 +1,75 @@
+<h1 style="text-align: center;">{{titulo}}</h1>
+<div>
+    <form [formGroup]="form">
+        <br>
+        <div fxLayout="row" fxLayoutAlign="space-evenly center">
+
+            <mat-form-field>
+                <mat-label>Nombres</mat-label>
+                <input matInput formControlName="nombre" #message maxlength="45" placeholder="Name">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Estado</mat-label>
+                <mat-select formControlName="estado">
+                    <mat-option [value]="estado.nombre" *ngFor="let estado of estados"> {{estado.nombre}} </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button class="boton" [disabled]="!form.valid" (click)='clickEnviar()' mat-raised-button>
+                Enviar
+            </button>
+
+            <button class="boton" (click)='onCancelar()' mat-raised-button>
+                Cancelar
+            </button>
+
+            <button *ngIf="editar" (click)='onEliminar()' class="boton eliminar">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </form>
+
+    <br><br>
+
+</div>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> Codigo </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombres </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef>Primer Apellido </th>
+            <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+        </ng-container>
+
+        <!--editar-->
+        <ng-container matColumnDef="editar">
+            <th mat-header-cell *matHeaderCellDef> Editar </th>
+            <td mat-cell *matCellDef="let element">
+                <div class="example-button-container">
+                    <button mat-icon-button (click)='onEditarClick(element)'>
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </div>
+            </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

@@ -1,0 +1,141 @@
+<h1 style="text-align: center;">{{titulo}}</h1>
+<div class="container">
+    <div *ngIf="asignar">
+        <form [formGroup]="form">
+            <br>
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+
+                <mat-form-field>
+                    <mat-label>Numero de Identificación</mat-label>
+                    <input matInput formControlName="identificacion" #message maxlength="45"
+                        placeholder="Numero de Identificacion">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Nombres</mat-label>
+                    <input matInput formControlName="nombres" #message maxlength="45" placeholder="Nombres">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Primer Apellido</mat-label>
+                    <input matInput formControlName="apellido1" #message maxlength="45" placeholder="Primer Apellido">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Segundo Apellido</mat-label>
+                    <input matInput formControlName="apellido2" #message maxlength="45" placeholder="Segundo Apellido">
+                </mat-form-field>
+
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button class="boton" [disabled]="!form.valid" (click)='clickEnviar()' mat-raised-button>
+                    Enviar
+                </button>
+
+                <button class="boton" (click)='onCancelar()' mat-raised-button>
+                    Cancelar
+                </button>
+            </div>
+        </form>
+
+        <br><br>
+
+    </div>
+
+
+    <div>
+        <mat-tab-group mat-align-tabs="center">
+
+            <mat-tab label="Libres">
+                <h2>Parqueaderos libres: {{libres}}</h2>
+                <div class="mat-elevation-z8">
+                    <table mat-table [dataSource]="dataSourceParqueaderoLibre">
+
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef> Codigo </th>
+                            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef> Parqueadero </th>
+                            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="estado">
+                            <th mat-header-cell *matHeaderCellDef>Estado </th>
+                            <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="asignar">
+                            <th mat-header-cell *matHeaderCellDef> Asignar </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="example-button-container">
+                                    <button mat-icon-button (click)='onAsignarClick(element)'>
+                                        <mat-icon>done</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columnasParqueaderoLibre"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnasParqueaderoLibre;"></tr>
+
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">Ningun Parqueadero Disponible</td>
+                        </tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </mat-tab>
+
+            <mat-tab label="Ocupados">
+                <div class="mat-elevation-z8">
+                    <table mat-table [dataSource]="dataSourceParqueaderoPersona">
+
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef> Codigo Parqueadero</th>
+                            <td mat-cell *matCellDef="let element"> {{element.parqueadero.id}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef> Parqueadero </th>
+                            <td mat-cell *matCellDef="let element"> {{element.parqueadero.nombre}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="ocupante">
+                            <th mat-header-cell *matHeaderCellDef>Ocupante </th>
+                            <td mat-cell *matCellDef="let element"> {{element.persona.nombres}}
+                                {{element.persona.primerApellido}} {{element.persona.segundoApellido}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="identificacion">
+                            <th mat-header-cell *matHeaderCellDef>Identificacion del Ocupante </th>
+                            <td mat-cell *matCellDef="let element"> {{element.persona.identificacion}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="desocupar">
+                            <th mat-header-cell *matHeaderCellDef> Desocupar </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="example-button-container">
+                                    <button mat-icon-button (click)='desocuparClick(element)'>
+                                        <mat-icon>highlight_off</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columnasParqueaderoPersona"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnasParqueaderoPersona;"></tr>
+
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">Ningun Parqueadero Ocupado</td>
+                        </tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </mat-tab>
+
+        </mat-tab-group>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<mat-sidenav-container class="example-container" (backdropClick)="close()">
+    <mat-sidenav #sidenav (keydown.escape)="close()" disableClose>
+        <p><button mat-button (click)="close()"><mat-icon>close</mat-icon></button></p>
+
+        <p><button mat-button (click)="pagina('persona')">Persona</button></p>
+        <p><button mat-button (click)="pagina('parqueadero')">Parqueadero</button></p>
+        <p><button mat-button (click)="pagina('parqueadero-admin')">Administrar Parqueaderos</button></p>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <button mat-icon-button (click)="sidenav.open()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
